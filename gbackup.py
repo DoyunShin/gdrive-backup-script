@@ -1,13 +1,13 @@
 #!/usr/bin/python3
-import pkg_resources
+import importlib.util
 
 required = [
-    "google-api-python-client",
-    "google-auth-httplib2",
-    "google-auth-oauthlib"
+    "googleapiclient.http",
+    "googleapiclient.discovery",
+    "google.oauth2"
 ]
 
-if not all(i in [p.project_name for p in pkg_resources.working_set] for i in required):
+if all([importlib.util.find_spec(i) for i in required]):
     raise ImportError("One or more required modules not found. Check https://github.com/DoyunShin/gdrive-backup-script/ for more information")
 
 from googleapiclient.http import MediaFileUpload

@@ -1,4 +1,14 @@
 #!/usr/bin/python3
+import importlib.util
+
+required = [
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib"
+]
+
+if any(not importlib.util.find_spec(i) for i in required): raise ImportError("One or more required modules not found. See README.md")
+
 from googleapiclient.http import MediaFileUpload
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
@@ -73,7 +83,7 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) != 2:
         #raise ValueError("Usage: upload.py <file> <root>")
-        print("Usage: upload.py <file> <root>")
+        print("Usage: upload.py <file> <driveid>")
         exit(1)
     cred = Path.home() / ".config" / "gbackup" / "gdrive-credential.json"
     cred = cred.resolve()

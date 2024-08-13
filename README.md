@@ -7,7 +7,7 @@ This script is used to backup files from a local directory to Google Drive. It u
 1. Install the script by running the following command:
     ```bash
     curl -L https://raw.githubusercontent.com/DoyunShin/gdrive-backup-script/master/gbackup.py > /usr/local/bin/gbackup
-    chmod +x /usr/local/bin/backup
+    chmod +x /usr/local/bin/gbackup
     sudo su - -c "pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib"
     ```
 

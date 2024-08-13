@@ -7,7 +7,8 @@ required = [
     "google-auth-oauthlib"
 ]
 
-if any(not importlib.util.find_spec(i) for i in required): raise ImportError("One or more required modules not found. See README.md")
+if any(not importlib.util.find_spec(i) for i in required): 
+    raise ImportError("One or more required modules not found. Check https://github.com/DoyunShin/gdrive-backup-script/ for more information")
 
 from googleapiclient.http import MediaFileUpload
 from googleapiclient.discovery import build

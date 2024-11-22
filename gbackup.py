@@ -104,7 +104,7 @@ class gdrive():
 
 def update():
     os.system("sudo sh -c 'curl -L https://raw.githubusercontent.com/DoyunShin/gdrive-backup-script/master/gbackup.py > /usr/local/bin/gbackup'")
-    os.system("chmod +x /usr/local/bin/gbackup")
+    os.system("sudo chmod +x /usr/local/bin/gbackup")
     print("Updated to latest version")
     
 

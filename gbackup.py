@@ -38,19 +38,6 @@ class gdrive():
         if "fields" not in kwargs:
             kwargs["fields"] = "nextPageToken, files(id, name, mimeType)"
         return self.service.files().list(includeItemsFromAllDrives=True, supportsAllDrives=True, pageSize=1000, **kwargs)
-        
-    def get_list(self) -> dict:
-        """
-        Return:
-            dict[name, gid]
-        """
-        query = f"'{self.root}' in parents"
-        results = self._get_files(q=query).execute()
-        files = {}
-        for i in results["files"]:
-            files[i["name"]] = i["id"]
-        
-        return files
     
     def _upload(self, metadata: dict, media = None) -> str:
         kwargs = {"body": metadata, "fields": "id"}
@@ -58,7 +45,31 @@ class gdrive():
         file = self.service.files().create(supportsAllDrives=True, **kwargs).execute()
         return file.get('id')
 
+    def get_list(self) -> dict[str, str]:
+        """Get list of files in the root folder
+        
+        Returns:
+            files(dict[name, gid]): Dictionary of file name and Google Drive file id
+        """
+
+        query = f"'{self.root}' in parents"
+        results = self._get_files(q=query).execute()
+        files = {}
+        for i in results["files"]:
+            files[i["name"]] = i["id"]
+        
+        return files
+
     def mkdir(self, name: str) -> str:
+        """Create folder in Google Drive
+
+        Args:
+            name(str): Name of the folder
+            
+        Returns:
+            gid(str): Google Drive folder id
+        """
+
         file_metadata = {
             'name': name,
             'mimeType': 'application/vnd.google-apps.folder',
@@ -66,13 +77,14 @@ class gdrive():
         }
         return self.upload(file_metadata)
 
-    def upload(self, file: Path, dirid: str = None) -> dict:
-        """
+    def upload(self, file: Path, dirid: str = None) -> str:
+        """Upload file to Google Drive
+
         Args:
-            file: Path to file
+            file(pathlib.Path): Path to file
         
         Return:
-            dict[filename, fileid]
+            fileid(str): Google Drive file id
         """
 
         if not dirid: dirid = self.root

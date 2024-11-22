@@ -103,7 +103,7 @@ class gdrive():
         return fileid
 
 def update():
-    os.system("curl -L https://raw.githubusercontent.com/DoyunShin/gdrive-backup-script/master/gbackup.py > /usr/local/bin/gbackup")
+    os.system("sudo sh -c 'curl -L https://raw.githubusercontent.com/DoyunShin/gdrive-backup-script/master/gbackup.py > /usr/local/bin/gbackup'")
     os.system("chmod +x /usr/local/bin/gbackup")
     print("Updated to latest version")
     
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         print("Usage: gbackup.py <file> <gfolderid>")
         print("Check https://github.com/DoyunShin/gdrive-backup-script for more information")
         exit(1)
-        
+
     cred = Path.home() / ".config" / "gbackup" / "gdrive-credential.json"
     cred = cred.resolve()
     uploadfile = Path(args[0])

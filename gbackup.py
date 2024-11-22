@@ -131,17 +131,24 @@ if __name__ == "__main__":
 
     cred = Path.home() / ".config" / "gbackup" / "gdrive-credential.json"
     cred = cred.resolve()
-    uploadfile = Path(args[0])
+    uploadpath = Path(args[0])
     root = args[1]
 
     if not cred.exists():
         raise FileNotFoundError(f"Credential {cred} not found")
-    if not uploadfile.exists():
-        raise FileNotFoundError(f"File {uploadfile} not found")
     if not root:
         raise ValueError("Root not set")
+
+    if uploadpath.is_dir():
+        files = [i for i in uploadpath.iterdir() if i.is_file()]
+    elif uploadpath.is_file():
+        files = [uploadpath]
+    else:
+        raise FileNotFoundError(f"File not found: {uploadpath}")
     
     g = gdrive(cred, root)
-    rtn = g.upload(uploadfile)
-    print(rtn)
-    exit(0)
+
+    for i in files:
+        rtn = g.upload(i)
+        print(f"{rtn} - {i.name}")
+        exit(0)

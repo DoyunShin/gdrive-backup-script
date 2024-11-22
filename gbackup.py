@@ -17,6 +17,7 @@ from pathlib import Path
 import mimetypes
 import json
 import sys
+import os
 
 class gdrive():
     def __init__(self, credential: Path, root: str):
@@ -101,12 +102,33 @@ class gdrive():
 
         return fileid
 
+def update():
+    os.system("curl -L https://raw.githubusercontent.com/DoyunShin/gdrive-backup-script/master/gbackup.py > /usr/local/bin/gbackup")
+    os.system("chmod +x /usr/local/bin/gbackup")
+    print("Updated to latest version")
+    
+
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if len(args) != 2:
+    if "-h" in args:
+        print("Usage: gbackup.py <file> <gfolderid>")
+        print("    file: file to upload")
+        print("    gfolderid: Google Drive folder id")
+        print()
+        print("Credential file: ~/.config/gbackup/gdrive-credential.json (Service Account)")
+        print("To update: gbackup.py --update / -u")
+        print("Check https://github.com/DoyunShin/gdrive-backup-script for more information")
+        exit(0)
+
+    elif "--update" in args or "-u" in args:
+        update()
+        exit(0)
+
+    elif len(args) != 2:
         print("Usage: gbackup.py <file> <gfolderid>")
         print("Check https://github.com/DoyunShin/gdrive-backup-script for more information")
         exit(1)
+        
     cred = Path.home() / ".config" / "gbackup" / "gdrive-credential.json"
     cred = cred.resolve()
     uploadfile = Path(args[0])

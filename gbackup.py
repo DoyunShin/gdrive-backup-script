@@ -24,6 +24,15 @@ class gdrive():
         self.credential = service_account.Credentials.from_service_account_info(credential, scopes=["https://www.googleapis.com/auth/drive"])
         self.service = build('drive', 'v3', credentials=self.credential)
         self.root = root
+        if not self._is_root_accessible():
+            raise ValueError("Root not accessible. Check Google drive permission.")
+
+    def _is_root_accessible(self):
+        try:
+            self.service.files().get(fileId=self.root).execute()
+            return True
+        except:
+            return False
 
     def _get_files(self, **kwargs):
         if "fields" not in kwargs:
@@ -83,8 +92,7 @@ class gdrive():
 if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) != 2:
-        #raise ValueError("Usage: upload.py <file> <root>")
-        print("Usage: upload.py <file> <driveid>")
+        print("Usage: upload.py <file> <folderid>")
         exit(1)
     cred = Path.home() / ".config" / "gbackup" / "gdrive-credential.json"
     cred = cred.resolve()
@@ -102,4 +110,3 @@ if __name__ == "__main__":
     rtn = g.upload(uploadfile)
     print(rtn)
     exit(0)
-

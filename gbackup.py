@@ -46,7 +46,7 @@ class gdrive():
         file = self.service.files().create(supportsAllDrives=True, **kwargs).execute()
         return file.get('id')
 
-    def get_list(self) -> dict[str, str]:
+    def get_list(self) -> dict:
         """Get list of files in the root folder
         
         Returns:

@@ -7,7 +7,7 @@ required = [
     "google.oauth2"
 ]
 
-if all([importlib.util.find_spec(i) for i in required]):
+if not all([importlib.util.find_spec(i) for i in required]):
     raise ImportError("One or more required modules not found. Check https://github.com/DoyunShin/gdrive-backup-script/ for more information")
 
 from googleapiclient.http import MediaFileUpload
@@ -104,7 +104,8 @@ class gdrive():
 if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) != 2:
-        print("Usage: upload.py <file> <folderid>")
+        print("Usage: gbackup.py <file> <gfolderid>")
+        print("Check https://github.com/DoyunShin/gdrive-backup-script for more information")
         exit(1)
     cred = Path.home() / ".config" / "gbackup" / "gdrive-credential.json"
     cred = cred.resolve()

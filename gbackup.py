@@ -25,11 +25,13 @@ class gdrive():
         self.credential = service_account.Credentials.from_service_account_info(credential, scopes=["https://www.googleapis.com/auth/drive"])
         self.service = build('drive', 'v3', credentials=self.credential)
         self.root = root
-        
+
         self._is_root_accessible()
 
     def _is_root_accessible(self):
-        self.service.files().get(fileId=self.root).execute()
+        # get folder information
+        query = f"'{self.root}' in parents"
+        self._get_files(q=query).execute()
         return True
 
     def _get_files(self, **kwargs):

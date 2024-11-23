@@ -29,7 +29,6 @@ class gdrive():
         self._is_root_accessible()
 
     def _is_root_accessible(self):
-        # get folder information
         query = f"'{self.root}' in parents"
         self._get_files(q=query).execute()
         return True
@@ -150,4 +149,5 @@ if __name__ == "__main__":
     for i in files:
         rtn = g.upload(i)
         print(f"{rtn} - {i.name}")
-        exit(0)
+    
+    exit(0)

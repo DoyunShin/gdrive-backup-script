@@ -25,15 +25,12 @@ class gdrive():
         self.credential = service_account.Credentials.from_service_account_info(credential, scopes=["https://www.googleapis.com/auth/drive"])
         self.service = build('drive', 'v3', credentials=self.credential)
         self.root = root
-        if not self._is_root_accessible():
-            raise ValueError("Root not accessible. Check Google drive permission.")
+        
+        self._is_root_accessible()
 
     def _is_root_accessible(self):
-        try:
-            self.service.files().get(fileId=self.root).execute()
-            return True
-        except:
-            return False
+        self.service.files().get(fileId=self.root).execute()
+        return True
 
     def _get_files(self, **kwargs):
         if "fields" not in kwargs:

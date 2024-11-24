@@ -95,7 +95,7 @@ class gdrive():
 
         mimetype = mimetypes.guess_type(file)[0]
 
-        media = MediaFileUpload(file, mimetype)
+        media = MediaFileUpload(file, mimetype, resumable=True)
         fileid = self._upload(file_info, media)
 
         return fileid
